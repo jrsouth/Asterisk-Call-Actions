@@ -1,0 +1,28 @@
+{
+  "name": "Asterisk Call Actions",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Allows telephony users to fire URLs based on their active and recent call lists",
+  "browser_action": {
+    "default_icon": "icons/icon_38.png",
+    "default_title": "Click for call list",  
+    "default_popup": "popup.html"
+  },
+  "icons": { "16": "icons/icon_16.png",
+           "19": "icons/icon_19.png",
+           "38": "icons/icon_38.png",
+           "48": "icons/icon_48.png",
+           "64": "icons/icon_64.png",
+           "128": "icons/icon_128.png",
+          "256": "icons/icon_256.png" },
+  "permissions": [
+    "storage",
+    "tabs",
+    "http://*/",
+    "https://*/"
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+    }
+}
