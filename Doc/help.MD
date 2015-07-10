@@ -31,7 +31,7 @@ Call objects should contain four strings:
 * start -- timestamp of the start of the call
 * end -- timestamp of the end of the call, or an empty string if the call is ongoing<
 
-[Sample JSON response]
+[Sample JSON response](https://raw.githubusercontent.com/jrsouth/Asterisk-Call-Actions/master/Webserver/sample.json)
 
 ## Script: action
 
