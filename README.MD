@@ -20,7 +20,7 @@ RewriteRule ^(.+)$ $1.php [L,QSA]
 
 ## Script: `get_calls`
 
-The server needs to provide a well-formed JSON response from "/get_calls", with the option values of "Extension" and "Password" sent as POST parameters "ext" and "pass" respectively.
+The server needs to provide a well-formed JSON response from "{baseURL}/get_calls", with the option values of "Extension" and "Password" sent as POST parameters "ext" and "pass" respectively.
 
 The response should contain two arrays, "calls_curr" and "calls_hist", each containing zero or more call objects.
 
@@ -33,8 +33,8 @@ Call objects should contain four strings:
 
 [Sample JSON response](https://raw.githubusercontent.com/jrsouth/Asterisk-Call-Actions/master/Webserver/sample.json)
 
-## Script: action
+## Script: `action`
 
-On clicking any listed call, a new tab is opened with the url "\action?number=XXXXXXXX" (with XXXXX being the external number of the clicked call).
+On clicking any listed call, a new tab is opened with the url "{baseURL}\action?number=XXXXXXXX" (with XXXXX being the external number of the clicked call).
 
 The simplest use-case would be a redirect to a CRM using the supplied "number" as a query-string variable.
