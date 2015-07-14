@@ -6,32 +6,31 @@ var EXT = '', PASS = '', URL = '';
 chrome.storage.sync.get(['ext', 'pass', 'url'], function(items) {
 
   // Open options if no url is defined
-  // Needs better checking, i.e. for valid response
+  // Needs better checking, i.e. for valid HTTP/JSON response
   if (typeof(items.url) === 'undefined' || items.url === '' ) {
       chrome.runtime.openOptionsPage();
-    }
+  }
 
-    EXT = items.ext;
-    PASS = items.pass;
-    URL = items.url;
+  EXT = items.ext;
+  PASS = items.pass;
+  URL = items.url;
 
-    // Set up click handler for notifications
-    chrome.notifications.onClicked.addListener ( function(nid) {
-      var number = (nid.split('%'))[1];
-      var json = JSON.parse('{"url": "' + URL + '/action?number=' + number + '", "active": true}');
-      chrome.tabs.create(json);
-
-  });
-    
+  // Set up click handler for notifications
+  chrome.notifications.onClicked.addListener ( function(nid) {
+    var number = (nid.split('%'))[1];
+    var json = JSON.parse('{"url": "' + URL + '/action?number=' + number + '", "active": true}');
+    chrome.tabs.create(json);
   } );
-    
-    function getExt () {
-      return(EXT);
-    }
 
-function notify(cid, number, url) {
+} );
 
-    var nid = url + '%' + number;
+
+
+
+// Generate system notification
+function notify (cid, number) {
+
+    var nid = Math.random() + '%' + number;
     chrome.notifications.clear(nid);
     chrome.notifications.create(nid,
     {
@@ -46,7 +45,11 @@ function notify(cid, number, url) {
 
 }
 
+function testNotify() {
+ notify('Jim South', '02075042267'); 
+}
 
+// Turn a phone number (as string) into nicely grouped number for display
 function formatNumber (number) {
   // @number to be passed as a string due to likelihood of leading zeros, +XX country codes, etc.
   // Maybe in future use Google's libphonenumber library, not necessary now
