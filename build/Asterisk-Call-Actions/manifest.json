@@ -16,6 +16,7 @@
            "128": "icons/icon_128.png",
           "256": "icons/icon_256.png" },
   "permissions": [
+    "notifications",
     "storage",
     "tabs",
     "http://*/",
@@ -24,5 +25,8 @@
   "options_ui": {
     "page": "options.html",
     "chrome_style": true
-    }
+    },
+  "web_accessible_resources": [
+    "icons/icon_128.png"
+  ]
 }

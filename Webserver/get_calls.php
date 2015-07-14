@@ -1,5 +1,33 @@
 <?php
 
+/*
+// MySQL code to get ten most recent numbers from the cdr table
+
+SET @ext = 2267;
+
+SELECT 
+	"(Unknown)" `cid`,
+    UNIX_TIMESTAMP(MAX(`calldate`)) `time`,
+    UNIX_TIMESTAMP(MAX(`calldate`)) + `duration` `end`,
+    LEAST(`src`, `dst`) `number`
+FROM
+    cdr
+WHERE
+    (`src` = @ext OR `dst` = @ext)
+        AND
+    (`src` LIKE '0%' OR `dst` LIKE '0%' OR `src` LIKE '+%' OR `dst` LIKE '+%')
+GROUP BY `number`
+ORDER BY `time` DESC
+LIMIT 10
+;
+
+
+
+*/
+
+
+
+
 echo('
 
 {

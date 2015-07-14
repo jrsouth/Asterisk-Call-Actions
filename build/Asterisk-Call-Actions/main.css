@@ -7,7 +7,7 @@ html {
 }
 
 h1 {
-  color: #e2001a;
+  color: #fc7204;
   font-family: Bliss Pro Heavy, Bliss Pro Bold, Helvetica, Arial, Sans-serif;
   font-size: 1.3em;
   padding: 0;
@@ -93,9 +93,9 @@ input#url {
 
 img#settings-link {
  position: fixed;
- top: 0;
- right: 0;
+ top: 5px;
+ right: 5px;
  cursor: pointer;
- width: 30px;
- height: 30px; 
+ width: 20px;
+ height: 20px; 
 }
