@@ -26,7 +26,8 @@
     "page": "options.html",
     "chrome_style": true
     },
-  "web_accessible_resources": [
-    "icons/icon_128.png"
-  ]
+    "background": {
+    "scripts": ["eventPage.js"],
+    "persistent": false
+  }
 }

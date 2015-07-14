@@ -1,5 +1,8 @@
 "use strict";
 
+// Set up user variables
+var EXT = '', PASS = '', URL = '', BGPAGE;
+
 /* ---- Begin new tab/window functions ---- */
 
 function newTab(newurl) {
@@ -20,7 +23,7 @@ function clickHandler(e) {
 }
 
 
-function showLinks(calls, url) {
+function showLinks(calls) {
   // Creates relevant HTML for each entry in the returned JSON object
    
   var linkDiv = document.getElementById('linkdiv');
@@ -29,13 +32,12 @@ function showLinks(calls, url) {
   var innerHTML = '';
   
   if (calls.calls_curr.length > 0) {
-    innerHTML += '<h1>Current call' + (calls.calls_curr.length > 1?'s':'') + '</h1>' + getLinks(calls.calls_curr, url);
-    notify(calls.calls_curr[0].cid, calls.calls_curr[0].number, url);
-    alert('notifying '+calls.calls_curr[0].cid);
+    innerHTML += '<h1>Current call' + (calls.calls_curr.length > 1?'s':'') + '</h1>' + getLinks(calls.calls_curr, URL);
+    BGPAGE.notify(calls.calls_curr[0].cid, calls.calls_curr[0].number, URL);
   }
   
   if (calls.calls_hist.length > 0) {
-    innerHTML += '<h1>Call history</h1>' + getLinks(calls.calls_hist, url);
+    innerHTML += '<h1>Call history</h1>' + getLinks(calls.calls_hist, URL);
   }
  
  linkDiv.innerHTML = innerHTML;
@@ -50,7 +52,7 @@ function showLinks(calls, url) {
   
 }
   
-function getLinks (calls, url) {
+function getLinks (calls) {
   
   var innerHTML = '';
   var call;
@@ -63,92 +65,50 @@ function getLinks (calls, url) {
     call.start = new Date(call.start * 1000);
     call.start = call.start.getHours() + ':' + ('0' + call.start.getMinutes()).slice(-2) + ', ' + call.start.toDateString();
 
-    innerHTML = innerHTML + '<div class="call' + (call.end===''?' active"':'') + '"><p class="cid' + (call.cid.charAt(0)==='('?' unmatched':'') + '">' + call.cid + '</p><p><strong>' + formatNumber(call.number) + '</strong> (' + call.start + ')</a></p><a href="' + url + '/action?number=' + call.number + '&uniq=' + Math.random() + '"><span class="clickable-div-link"></span></a></div>';
+    innerHTML = innerHTML + '<div class="call' + (call.end===''?' active"':'') + '"><p class="cid' + (call.cid.charAt(0)==='('?' unmatched':'') + '">' + call.cid + '</p><p><strong>' + BGPAGE.formatNumber(call.number) + '</strong> (' + call.start + ')</a></p><a href="' + URL + '/action?number=' + call.number + '&uniq=' + Math.random() + '"><span class="clickable-div-link"></span></a></div>';
   }
   return(innerHTML);
   
 }
 
-function formatNumber (number) {
-  // @number to be passed as a string due to likelihood of leading zeros, +XX country codes, etc.
-  // Maybe in future use Google's libphonenumber library, not necessary now
 
-  switch (number.charAt(0)) {
-    case '0': // "Normal" number
-	      switch (number.charAt(1)) {
-		  case '7': // Handle mobile numbers 5-3-3
-			    return(number.replace(/(\d{5})(\d{3})(\d{3})/, '$1 $2 $3'));
-		  default : // Otherwise assume UK national format 4-3-4
-			    return(number.replace(/(\d{4})(\d{3})(\d{4})/, '$1 $2 $3'));
-	      }
 
-    case '+': // International call, currently return as-is due to variance of country code length
-	      return(number);
-
-    default : // No match, return as given  
-	      return(number);
-  }
-}
-
-function fetchLinks (ext, pass, url) {
+function fetchCalls () {
  
   var xhr = new XMLHttpRequest();
   
-  xhr.open('POST', url + '/get_calls', true);
+  xhr.open('POST', URL + '/get_calls', true);
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
       var calls = JSON.parse(xhr.responseText);
-      showLinks(calls, url);
+      showLinks(calls);
     }
   };
-  xhr.send('ext='+ext+'&pass='+pass);
+  xhr.send('ext='+EXT+'&pass='+PASS);
 }
 
-function notify(cid, number, url) {
 
-    var nid = url + '%' + number;
-    chrome.notifications.clear(nid);
-    chrome.notifications.create(nid,
-    {
-      type : 'basic',
-      title : 'Incoming Call',
-      isClickable: true,
-      iconUrl : 'icons/icon_128.png', 
-      message : cid,
-      contextMessage : '(' + formatNumber(number) + ')'
-    },
-    function () {} );
-
-}
 
 
 function init() {
-  // Get extension, password, and URL variables from storage, 
-  chrome.storage.sync.get(['ext', 'pass', 'url'], function(items) {
-    if (typeof(items.url) === 'undefined' || items.url === '' ) {
-      chrome.runtime.openOptionsPage()
-    }
-      
-    // fetch/create appropriate links
-    fetchLinks(items.ext, items.pass, items.url)
+  // Get background page (and settings)
+    chrome.runtime.getBackgroundPage( function (bgPage) {
 
-  });
+    EXT = bgPage.EXT;
+    PASS = bgPage.PASS;
+    URL = bgPage.URL;
+    BGPAGE = bgPage;
+          
+    fetchCalls ();
+    });
   
 
   
   // Set up settings icon link
   var settingsLink = document.getElementById('settings-link');
   settingsLink.addEventListener('click', function () { chrome.runtime.openOptionsPage(); });
-    
-  chrome.notifications.onClicked.addListener ( function(nid) {
-      alert(nid);
-      var json = JSON.parse('{"url": "' + nid + '/action?number=' + nid + '", "active": true}');
-      chrome.tabs.create(json);
-      alert('xxx');
-      notification.close();
-    });
-
+  
 }
 
-// Set it all up once the pop-up is loaded.
+// Fire it all up once the full pop-up is loaded.
 document.addEventListener('DOMContentLoaded', function () {  init();  });
