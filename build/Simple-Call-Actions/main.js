@@ -22,6 +22,7 @@ function fetchCalls () {
   var xhr = new XMLHttpRequest();
 
   xhr.open('POST', URL + '/get_calls', true);
+  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
       var calls = JSON.parse(xhr.responseText);

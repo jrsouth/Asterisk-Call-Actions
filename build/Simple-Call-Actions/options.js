@@ -1,9 +1,9 @@
-
+"use strict";
 
 function save_options() {
   var ext = document.getElementById('ext').value;
   var pass = document.getElementById('pass').value;
-  var url = document.getElementById('url').value.replace(/\/+$/, ''); // Replace trailing slash
+  var url = document.getElementById('url').value.replace(/\/+$/, ''); // remove trailing slash if present
 
   chrome.storage.sync.set({
     ext: ext,

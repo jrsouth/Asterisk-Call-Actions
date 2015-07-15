@@ -1,7 +1,7 @@
+"use strict";
+
 // Set up user variables
 var EXT = '', PASS = '', URL = '';
-
-console.dir(chrome.storage.sync);
 
 // Get extension, password, and URL variables from storage (EXT, PASS, URL)
 chrome.storage.sync.get(['ext', 'pass', 'url'], function(items) {
@@ -23,6 +23,21 @@ chrome.storage.sync.get(['ext', 'pass', 'url'], function(items) {
     chrome.tabs.create(json);
   } );
 
+  // Storage change watching code. Hacky but simple.
+  chrome.storage.onChanged.addListener(function(changes, namespace) {
+    if (namespace === 'sync') {
+      if (!!changes['ext']) {
+	EXT = changes['ext'].newValue;
+      }
+      if (!!changes['pass']) {
+        PASS = changes['pass'].newValue;
+      }
+      if (!!changes['url']) {
+        URL = changes['url'].newValue;
+      }
+     }
+    });
+  
 } );
 
 
@@ -71,3 +86,6 @@ function formatNumber (number) {
 	      return(number);
   }
 }
+
+
+

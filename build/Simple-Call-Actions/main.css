@@ -1,7 +1,7 @@
 html {
   background-color: #ffffff;
   color: #555555;
-  min-width: 300px;
+  min-width: 350px;
   min-height: 180px;
   font-family: Bliss Pro Bold, Helvetica, Arial, Sans-serif;
 }
@@ -50,6 +50,10 @@ div.call {
  padding: .5em;
  position: relative;
  border-radius: .25em;
+}
+
+p {
+  white-space: nowrap;
 }
 
 div.call p.cid {
