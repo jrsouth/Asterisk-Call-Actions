@@ -40,6 +40,17 @@ function displayCalls(calls) {
   linkDiv.innerHTML = 'No calls found';
 
   var innerHTML = '';
+  
+  if (calls.errors.length > 0) {
+    // display errors
+    innerHTML += '<p>One or more errors occurred, please check your settings.</p><h2>Errors:</h2><ul>';
+     var i;
+      for (i = 0; i < calls.errors.length; i += 1) {
+       innerHTML += '<li>' + calls.errors[i].e_text + '</li>';
+     }
+    innerHTML += '</ul>';
+    
+  } else {
 
   if (calls.calls_curr.length > 0) {
     innerHTML += '<h1>Current call' + (calls.calls_curr.length > 1?'s':'') + '</h1>' + getCallLinks(calls.calls_curr, URL);
@@ -49,6 +60,8 @@ function displayCalls(calls) {
     innerHTML += '<h1>Call history</h1>' + getCallLinks(calls.calls_hist, URL);
   }
 
+  }
+  
  linkDiv.innerHTML = innerHTML;
 
    // Add a generic click event listener to all the new links in the document
