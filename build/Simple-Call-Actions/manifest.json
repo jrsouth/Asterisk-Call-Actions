@@ -1,6 +1,6 @@
 {
   "name": "Simple Call Actions",
-  "version": "0.2",
+  "version": "0.2.1",
   "manifest_version": 2,
   "description": "Allows telephony users to fire actions (URL + query string parameters) based on their active and recent call lists",
   "browser_action": {
