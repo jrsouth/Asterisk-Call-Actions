@@ -1,8 +1,8 @@
 {
-  "name": "Asterisk Call Actions",
+  "name": "Simple Call Actions",
   "version": "0.2",
   "manifest_version": 2,
-  "description": "Allows telephony users to fire URLs based on their active and recent call lists",
+  "description": "Allows telephony users to fire actions (URL + query string parameters) based on their active and recent call lists",
   "browser_action": {
     "default_icon": "icons/icon_38.png",
     "default_title": "Click for call list",  
@@ -28,7 +28,7 @@
     "chrome_style": true
     },
     "background": {
-    "scripts": ["eventPage.js"],
+    "scripts": ["background.js"],
     "persistent": false
   }
 }

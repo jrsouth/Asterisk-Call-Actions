@@ -1,6 +1,7 @@
 // Set up user variables
 var EXT = '', PASS = '', URL = '';
 
+console.dir(chrome.storage.sync);
 
 // Get extension, password, and URL variables from storage (EXT, PASS, URL)
 chrome.storage.sync.get(['ext', 'pass', 'url'], function(items) {
